@@ -1,16 +1,4 @@
-sumo = {}
 
---note add register on hp change so players dont die
-minetest.register_node("sumo:boundary", {
-    description = "Sumo arena bounary",
-    drawtype = "glasslike",
-    tiles = {"default_obsidian_glass.png"},
-    paramtype = "light",
-    walkable = false,
-    is_ground_content = false,
-    sunlight_propagates = true,
-    groups = {cracky=3,oddly_breakable_by_hand=3},
-})
 
 minetest.register_craftitem("sumo:pushstick", {
     description = "Push Stick",
@@ -100,7 +88,7 @@ end)
 
 
 minetest.register_privilege("sumo_admin", {  
-    description = "With this you can use /sumo_admin"
+    description = "With this you can use /sumo create, edit"
 })
   
 
@@ -109,10 +97,6 @@ minetest.register_privilege("sumo_admin", {
   ChatCmdBuilder.new("sumo", function(cmd)
 
     -- create arena
-    cmd:sub("tutorial", function(name)
-        minetest.chat_send_player(name, "See the TUTORIAL.txt file in the mod folder.")
-    end)
-
 
 
     -- create arena
@@ -142,30 +126,8 @@ minetest.register_privilege("sumo_admin", {
 
 
 
-    -- info on a specific arena
-    cmd:sub("info :arena", function(name, arena_name)
-        arena_lib.print_arena_info(name, "sumo", arena_name)
-      end)
 
 
-
-    -- this sets the spawns using the player position
-    cmd:sub("setspawn :arena", function(name, arena)
-        arena_lib.set_spawner(name, "sumo", arena)
-      end)
-
-
-
-    cmd:sub("setspawn :arena", function(name, arena)
-        arena_lib.set_spawner(name, "sumo", arena)
-    end)
-
-
-
-    -- this sets the arena's sign
-    cmd:sub("setsign :arena", function(sender, arena)
-        arena_lib.set_sign(sender, nil, nil, "sumo", arena)
-    end)
 
 
     
@@ -187,29 +149,18 @@ minetest.register_privilege("sumo_admin", {
         arena_lib.disable_arena(name, "sumo", arena)
     end)
 
-
-    -- Debug commands
-    cmd:sub("play :sound :gain:number", function(p_name, sound, gain)
-        minetest.sound_play(sound, { pos = minetest.get_player_by_name(p_name):get_pos(), to_player = p_name, gain = gain})
-    end)
-    
-
 end, {
   description = [[
       
     (/help sumo)
 
     Use this to configure your arena:
-    - tutorial
     - create <arena name> [min players] [max players]
     - edit <arena name> 
     - enable <arena name>
     
     Other commands:
-    - list
-    - info <arena name>
     - remove <arena name>
-    - removechest <arena name>
     - disable <arena>
     ]],
   privs = { sumo_admin = true }
